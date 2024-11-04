@@ -1,6 +1,8 @@
 package exam.parkReview.service;
 
 import exam.parkReview.domain.entity.Park;
+import exam.parkReview.exception.AppException;
+import exam.parkReview.exception.ErrorCode;
 import exam.parkReview.repository.ParkRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -96,7 +98,7 @@ public class DataService {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new AppException(ErrorCode.DATA_LOAD_FAILED, "API 호출 중 오류가 발생했습니다: " + e.getMessage());
         }
         return ResponseEntity.ok().body("데이터 불러오기 완료");
     }

@@ -3,6 +3,8 @@ package exam.parkReview.service;
 import exam.parkReview.domain.entity.Park;
 import exam.parkReview.dto.ParkDetailsDto;
 import exam.parkReview.dto.ParkSummaryDto;
+import exam.parkReview.exception.AppException;
+import exam.parkReview.exception.ErrorCode;
 import exam.parkReview.repository.ParkRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +41,7 @@ public class ParkService {
     public ResponseEntity<ParkDetailsDto> getParkDetails(long parkNum) {
 
         Park park = parkRepository.findByParkNum(parkNum)
-                .orElseThrow(() -> new IllegalArgumentException("공원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new AppException(ErrorCode.PARK_NOT_FOUND,"해당 공원을 찾을 수 없습니다."));
         ParkDetailsDto parkDetailsDto = new ParkDetailsDto(park);
 
         return ResponseEntity.ok().body(parkDetailsDto);
