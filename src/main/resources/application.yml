@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    # MySQL
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/park_review?&serverTimezone=Asia/Seoul
+    username: root
+    password: aszx99
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  secret: hello.world.ee.ff
+
+api:
+  base-url: "http://openapi.seoul.go.kr:8088"
+  key: "6279634271776f6f31313951736a4279"
+  type: "json"
+  service: "SearchParkInfoService"
