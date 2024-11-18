@@ -25,25 +25,21 @@ public class ParkService {
 
     private final ParkRepository parkRepository;
 
-    public ResponseEntity<List<ParkSummaryDto>> getParks(int page, int size) {
+    public List<ParkSummaryDto> getParks(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Park> parks = parkRepository.findAll(pageable);
 
-        List<ParkSummaryDto> parkSummaries = parks.getContent().stream()
+        return parks.getContent().stream()
                 .map(ParkSummaryDto::new)
                 .toList();
-
-        return ResponseEntity.ok().body(parkSummaries);
     }
 
 
-    public ResponseEntity<ParkDetailsDto> getParkDetails(long parkNum) {
+    public ParkDetailsDto getParkDetails(long parkNum) {
 
         Park park = parkRepository.findByParkNum(parkNum)
                 .orElseThrow(() -> new AppException(ErrorCode.PARK_NOT_FOUND,"해당 공원을 찾을 수 없습니다."));
-        ParkDetailsDto parkDetailsDto = new ParkDetailsDto(park);
-
-        return ResponseEntity.ok().body(parkDetailsDto);
+        return new ParkDetailsDto(park);
     }
 }

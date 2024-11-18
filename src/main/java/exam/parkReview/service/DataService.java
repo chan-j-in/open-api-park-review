@@ -40,7 +40,7 @@ public class DataService {
     private String service;
 
     @Transactional
-    public ResponseEntity<String> save() {
+    public void save() {
 
         String result = "";
 
@@ -124,7 +124,6 @@ public class DataService {
         } catch (Exception e) {
             throw new AppException(ErrorCode.DATA_LOAD_FAILED, "API 호출 중 오류가 발생했습니다: " + e.getMessage());
         }
-        return ResponseEntity.ok().body("데이터 불러오기 완료");
     }
 
     @Scheduled(cron = "0 0 0 * * MON")

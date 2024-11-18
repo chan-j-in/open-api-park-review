@@ -17,6 +17,8 @@ public class DataController {
 
     @PostMapping("/save")
     public ResponseEntity<String> save() {
-        return dataService.save();
+
+        dataService.save();
+        return ResponseEntity.ok().body("데이터 불러오기 완료");
     }
 }
