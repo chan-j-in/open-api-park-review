@@ -9,7 +9,10 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     PARK_NOT_FOUND(HttpStatus.NOT_FOUND, "Park not found"),
-    DATA_LOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to load data");
+    DATA_LOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to load data"),
+    DUPLICATE_MEMBER(HttpStatus.CONFLICT, "Duplicate member found"),
+    PASSWORD_DO_NOT_MATCH(HttpStatus.BAD_REQUEST, "Passwords do nat match"),
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid username  or password");
 
     private HttpStatus httpStatus;
     private String message;
