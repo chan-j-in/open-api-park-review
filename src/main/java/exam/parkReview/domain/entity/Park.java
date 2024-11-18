@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,6 +26,9 @@ public class Park {
     private String guideMap;
     private String address;
     private String websiteUrl;
+
+    @OneToMany(mappedBy = "park", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Review> reviews;
 
     @Builder
     public Park(long parkNum, String parkName, String parkSummary, String mainFacilities, String guideMap, String address, String websiteUrl) {

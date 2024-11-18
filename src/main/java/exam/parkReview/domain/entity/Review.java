@@ -18,9 +18,19 @@ public class Review {
     private String content;
     private int rating;
 
+    @ManyToOne
+    @JoinColumn(name = "park_id")
+    private Park park;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @Builder
-    public Review(String content, int rating) {
+    public Review(String content, int rating, Park park, Member member) {
         this.content = content;
         this.rating = rating;
+        this.park = park;
+        this.member = member;
     }
 }
