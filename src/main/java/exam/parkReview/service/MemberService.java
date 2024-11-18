@@ -8,13 +8,16 @@ import exam.parkReview.exception.ErrorCode;
 import exam.parkReview.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    @Transactional
     public void signUp(MemberSignupDto memberSignupDto) {
 
         if (memberRepository.existsByUsername(memberSignupDto.getUsername())) {
