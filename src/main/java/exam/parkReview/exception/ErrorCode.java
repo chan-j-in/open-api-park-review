@@ -12,7 +12,9 @@ public enum ErrorCode {
     DATA_LOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to load data"),
     DUPLICATE_MEMBER(HttpStatus.CONFLICT, "Duplicate member found"),
     PASSWORD_DO_NOT_MATCH(HttpStatus.BAD_REQUEST, "Passwords do nat match"),
-    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid username  or password");
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid username  or password"),
+    MEMBER_NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "Member not authenticated"),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "Member not found");
 
     private HttpStatus httpStatus;
     private String message;
