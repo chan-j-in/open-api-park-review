@@ -14,7 +14,9 @@ public enum ErrorCode {
     PASSWORD_DO_NOT_MATCH(HttpStatus.BAD_REQUEST, "Passwords do nat match"),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid username  or password"),
     MEMBER_NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "Member not authenticated"),
-    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "Member not found");
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "Member not found"),
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "Review not found"),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized");
 
     private HttpStatus httpStatus;
     private String message;
