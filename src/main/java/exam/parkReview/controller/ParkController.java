@@ -23,14 +23,14 @@ public class ParkController {
             @RequestParam(value = "size", defaultValue = "10") int size) {
 
         List<ParkSummaryDto> parkSummaries = parkService.getParks(page, size);
-        return ResponseEntity.ok().body(parkSummaries);
+        return ResponseEntity.ok(parkSummaries);
     }
 
     @GetMapping("/{parkNum}")
     public ResponseEntity<ParkDetailsDto> getParkDetails(@PathVariable("parkNum") long parkNum) {
 
         ParkDetailsDto parkDetails = parkService.getParkDetails(parkNum);
-        return ResponseEntity.ok().body(parkDetails);
+        return ResponseEntity.ok(parkDetails);
     }
 
 }

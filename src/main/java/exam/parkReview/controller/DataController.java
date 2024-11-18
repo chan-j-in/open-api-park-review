@@ -19,6 +19,6 @@ public class DataController {
     public ResponseEntity<String> save() {
 
         dataService.save();
-        return ResponseEntity.ok().body("데이터 불러오기 완료");
+        return ResponseEntity.ok("데이터 불러오기 완료");
     }
 }
