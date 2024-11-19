@@ -1,9 +1,9 @@
 package exam.parkReview.controller;
 
 import exam.parkReview.domain.entity.Review;
-import exam.parkReview.dto.CreateReviewRequestDto;
-import exam.parkReview.dto.ReviewResponseDto;
-import exam.parkReview.dto.UpdateReviewRequestDto;
+import exam.parkReview.dto.review.CreateReviewRequestDto;
+import exam.parkReview.dto.review.ReviewResponseDto;
+import exam.parkReview.dto.review.UpdateReviewRequestDto;
 import exam.parkReview.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

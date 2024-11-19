@@ -1,4 +1,4 @@
-package exam.parkReview.dto;
+package exam.parkReview.dto.review;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

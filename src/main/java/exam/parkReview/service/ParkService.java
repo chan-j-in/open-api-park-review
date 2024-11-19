@@ -1,8 +1,8 @@
 package exam.parkReview.service;
 
 import exam.parkReview.domain.entity.Park;
-import exam.parkReview.dto.ParkDetailsDto;
-import exam.parkReview.dto.ParkSummaryDto;
+import exam.parkReview.dto.park.ParkDetailsDto;
+import exam.parkReview.dto.park.ParkSummaryDto;
 import exam.parkReview.exception.AppException;
 import exam.parkReview.exception.ErrorCode;
 import exam.parkReview.repository.ParkRepository;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

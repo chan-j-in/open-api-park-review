@@ -1,6 +1,7 @@
-package exam.parkReview.dto;
+package exam.parkReview.dto.park;
 
 import exam.parkReview.domain.entity.Park;
+import exam.parkReview.dto.review.ReviewResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

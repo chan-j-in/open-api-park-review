@@ -1,7 +1,7 @@
 package exam.parkReview.controller;
 
-import exam.parkReview.dto.ParkDetailsDto;
-import exam.parkReview.dto.ParkSummaryDto;
+import exam.parkReview.dto.park.ParkDetailsDto;
+import exam.parkReview.dto.park.ParkSummaryDto;
 import exam.parkReview.service.ParkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

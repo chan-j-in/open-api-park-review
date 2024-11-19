@@ -1,4 +1,4 @@
-package exam.parkReview.dto;
+package exam.parkReview.dto.park;
 
 import exam.parkReview.domain.entity.Park;
 import lombok.AllArgsConstructor;

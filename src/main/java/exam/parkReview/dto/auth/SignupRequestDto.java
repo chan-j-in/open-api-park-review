@@ -1,4 +1,4 @@
-package exam.parkReview.dto;
+package exam.parkReview.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberSignupDto {
+public class SignupRequestDto {
 
     @NotBlank(message = "이름은 필수 입력값입니다.")
     private String username;

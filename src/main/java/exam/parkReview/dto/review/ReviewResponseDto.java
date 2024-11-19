@@ -1,4 +1,4 @@
-package exam.parkReview.dto;
+package exam.parkReview.dto.review;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package exam.parkReview.service;
 
 import exam.parkReview.domain.entity.Member;
-import exam.parkReview.dto.MemberLoginDto;
-import exam.parkReview.dto.MemberSignupDto;
+import exam.parkReview.dto.auth.LoginRequestDto;
+import exam.parkReview.dto.auth.SignupRequestDto;
 import exam.parkReview.exception.AppException;
 import exam.parkReview.exception.ErrorCode;
 import exam.parkReview.repository.MemberRepository;
@@ -30,7 +30,7 @@ public class AuthService {
     private Long expiredMs = 1000 * 60L * 60;
 
     @Transactional
-    public String join(MemberSignupDto requestDto) {
+    public String join(SignupRequestDto requestDto) {
 
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
@@ -54,7 +54,7 @@ public class AuthService {
         return member.getUsername();
     }
 
-    public String login(MemberLoginDto requestDto) {
+    public String login(LoginRequestDto requestDto) {
 
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();

@@ -1,7 +1,7 @@
 package exam.parkReview.controller;
 
-import exam.parkReview.dto.MemberLoginDto;
-import exam.parkReview.dto.MemberSignupDto;
+import exam.parkReview.dto.auth.LoginRequestDto;
+import exam.parkReview.dto.auth.SignupRequestDto;
 import exam.parkReview.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/join")
-    public ResponseEntity<String> join(@Valid @RequestBody MemberSignupDto requestDto) {
+    public ResponseEntity<String> join(@Valid @RequestBody SignupRequestDto requestDto) {
 
         log.info("dto username : {}", requestDto.getUsername());
 
@@ -30,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody MemberLoginDto requestDto) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto requestDto) {
 
         String token = authService.login(requestDto);
         return ResponseEntity.ok(token);
