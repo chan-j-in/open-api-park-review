@@ -48,7 +48,11 @@ public class ReviewService {
                 .member(member)
                 .build();
 
+        member.addReview(review);
         Review savedReview = reviewRepository.save(review);
+
+        member.addReviewCount();
+        member.setRatingAvg();
 
         return new ReviewResponseDto(
                 parkNum,
@@ -90,7 +94,11 @@ public class ReviewService {
         Review review = reviewRepository.findByParkAndMember(park, currentMember)
                 .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND, "리뷰를 찾을 수 없습니다."));
 
+        currentMember.removeReview(review);
         reviewRepository.delete(review);
+
+        currentMember.subtractReviewCount();
+        currentMember.setRatingAvg();
     }
 
     @Transactional
@@ -104,8 +112,9 @@ public class ReviewService {
         Review review = reviewRepository.findByParkAndMember(park, currentMember)
                 .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND, "작성된 리뷰가 없습니다."));
 
-
         review.update(updateReviewRequestDto.getContent(), updateReviewRequestDto.getRating());
+
+        currentMember.setRatingAvg();
 
         return review;
     }

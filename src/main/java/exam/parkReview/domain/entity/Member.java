@@ -18,7 +18,14 @@ public class Member {
     private Long id;
 
     private String username;
+
     private String password;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Review> reviews;
+
+    private int reviewCount;
+    private double ratingAvg;
 
     @Builder
     public Member(String username, String password) {
@@ -26,6 +33,35 @@ public class Member {
         this.password = password;
     }
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Review> reviews;
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
+
+    public void removeReview(Review review) {
+        this.reviews.remove(review);
+    }
+
+    public void addReviewCount() {
+        this.reviewCount++;
+    }
+
+    public void subtractReviewCount() {
+        this.reviewCount--;
+    }
+
+    public void setRatingAvg() {
+
+        if (reviews == null || reviews.isEmpty()) {
+            this.ratingAvg = 0;
+            return;
+        }
+
+        double totalRating = reviews.stream()
+                .mapToDouble(Review::getRating)
+                .sum();
+
+        this.ratingAvg = totalRating/reviews.size();
+    }
+
+
 }
