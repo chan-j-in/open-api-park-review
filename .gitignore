@@ -1,4 +1,5 @@
 *.yml
+*.class
 HELP.md
 .gradle
 build/
