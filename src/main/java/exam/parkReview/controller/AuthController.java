@@ -3,6 +3,7 @@ package exam.parkReview.controller;
 import exam.parkReview.dto.MemberLoginDto;
 import exam.parkReview.dto.MemberSignupDto;
 import exam.parkReview.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody MemberSignupDto requestDto) {
+    public ResponseEntity<String> join(@Valid @RequestBody MemberSignupDto requestDto) {
 
         log.info("dto username : {}", requestDto.getUsername());
 
@@ -29,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody MemberLoginDto requestDto) {
+    public ResponseEntity<String> login(@Valid @RequestBody MemberLoginDto requestDto) {
 
         String token = authService.login(requestDto);
         return ResponseEntity.ok(token);
