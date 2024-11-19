@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class Park {
     private String websiteUrl;
 
     @OneToMany(mappedBy = "park", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
     @Builder
     public Park(long parkNum, String parkName, String parkSummary, String mainFacilities, String guideMap, String address, String websiteUrl) {
@@ -39,5 +40,9 @@ public class Park {
         this.guideMap = guideMap;
         this.address = address;
         this.websiteUrl = websiteUrl;
+    }
+
+    public void addReview(Review review) {
+        reviews.add(review);
     }
 }
