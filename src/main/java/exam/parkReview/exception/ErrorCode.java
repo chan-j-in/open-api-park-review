@@ -16,7 +16,7 @@ public enum ErrorCode {
     MEMBER_NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "Member not authenticated"),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "Member not found"),
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "Review not found"),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized");
+    REVIEW_ALREADY_EXISTS(HttpStatus.ALREADY_REPORTED, "Review already exists");
 
     private HttpStatus httpStatus;
     private String message;
