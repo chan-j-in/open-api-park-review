@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateReviewDto {
+public class ReviewResponseDto {
 
+    private Long parkNum;
     private String content;
     private int rating;
-    private Long parkNum;
     private String username;
 }
