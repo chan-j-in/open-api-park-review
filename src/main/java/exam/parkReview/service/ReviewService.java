@@ -3,8 +3,9 @@ package exam.parkReview.service;
 import exam.parkReview.domain.entity.Member;
 import exam.parkReview.domain.entity.Park;
 import exam.parkReview.domain.entity.Review;
-import exam.parkReview.dto.CreateReviewDto;
-import exam.parkReview.dto.ParkReviewListDto;
+import exam.parkReview.dto.CreateReviewRequestDto;
+import exam.parkReview.dto.ReviewResponseDto;
+import exam.parkReview.dto.UpdateReviewRequestDto;
 import exam.parkReview.exception.AppException;
 import exam.parkReview.exception.ErrorCode;
 import exam.parkReview.repository.MemberRepository;
@@ -29,24 +30,34 @@ public class ReviewService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void createReview(CreateReviewDto createReviewDto) {
+    public ReviewResponseDto createReview(Long parkNum, CreateReviewRequestDto createReviewRequestDto) {
 
-        Park park = parkRepository.findByParkNum(createReviewDto.getParkNum())
+        Park park = parkRepository.findByParkNum(parkNum)
                 .orElseThrow(() -> new AppException(ErrorCode.PARK_NOT_FOUND, "올바르지 않은 공원 번호입니다."));
 
         Member member = getCurrentMember();
 
+        if (reviewRepository.existsByParkAndMember(park, member)) {
+            throw new AppException(ErrorCode.REVIEW_ALREADY_EXISTS, "이미 작성하신 리뷰가 있습니다.");
+        }
+
         Review review = Review.builder()
-                .content(createReviewDto.getContent())
-                .rating(createReviewDto.getRating())
+                .content(createReviewRequestDto.getContent())
+                .rating(createReviewRequestDto.getRating())
                 .park(park)
                 .member(member)
                 .build();
 
-        reviewRepository.save(review);
+        Review savedReview = reviewRepository.save(review);
+
+        return new ReviewResponseDto(
+                parkNum,
+                savedReview.getContent(),
+                savedReview.getRating(),
+                member.getUsername());
     }
 
-    public List<ParkReviewListDto> getReviewsByPark(Long parkNum) {
+    public List<ReviewResponseDto> getReviewsByPark(Long parkNum) {
 
         Park park = parkRepository.findByParkNum(parkNum)
                 .orElseThrow(() -> new AppException(ErrorCode.PARK_NOT_FOUND, "올바르지 않은 공원 번호입니다."));
@@ -54,49 +65,47 @@ public class ReviewService {
         List<Review> reviews = reviewRepository.findByPark(park);
 
         return reviews.stream()
-                .map(review -> new ParkReviewListDto(review.getPark().getParkNum(), review.getContent(), review.getRating(), review.getMember().getUsername()))
+                .map(review -> new ReviewResponseDto(review.getPark().getParkNum(), review.getContent(), review.getRating(), review.getMember().getUsername()))
                 .collect(Collectors.toList());
     }
 
-    public List<ParkReviewListDto> getReviewsByMember(String username) {
+    public List<ReviewResponseDto> getReviewsByMember() {
 
-        Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(ErrorCode.MEMBER_NOT_FOUND, "회원을 찾을 수 없습니다."));
+        Member member = getCurrentMember();
 
         List<Review> reviews = reviewRepository.findByMember(member);
         return reviews.stream()
-                .map(review -> new ParkReviewListDto(review.getPark().getParkNum(), review.getContent(), review.getRating(), review.getMember().getUsername()))
+                .map(review -> new ReviewResponseDto(review.getPark().getParkNum(), review.getContent(), review.getRating(), review.getMember().getUsername()))
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public void deleteReview(Long reviewId) {
+    public void deleteReview(Long parkNum) {
+
+        Park park = parkRepository.findByParkNum(parkNum)
+                .orElseThrow(() -> new AppException(ErrorCode.PARK_NOT_FOUND, "올바르지 않은 공원 번호입니다."));
 
         Member currentMember = getCurrentMember();
 
-        Review review = reviewRepository.findById(reviewId)
+        Review review = reviewRepository.findByParkAndMember(park, currentMember)
                 .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND, "리뷰를 찾을 수 없습니다."));
-
-        if (!review.getMember().equals(currentMember)) {
-            throw new AppException(ErrorCode.UNAUTHORIZED, "본인의 리뷰만 삭제할 수 있습니다.");
-        }
 
         reviewRepository.delete(review);
     }
 
     @Transactional
-    public Review updateReview(Long reviewId, CreateReviewDto updateReviewDto) {
+    public Review updateReview(Long parkNum, UpdateReviewRequestDto updateReviewRequestDto) {
+
+        Park park = parkRepository.findByParkNum(parkNum)
+                .orElseThrow(() -> new AppException(ErrorCode.PARK_NOT_FOUND, "올바르지 않은 공원 번호입니다."));
 
         Member currentMember = getCurrentMember();
 
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND, "리뷰를 찾을 수 없습니다."));
+        Review review = reviewRepository.findByParkAndMember(park, currentMember)
+                .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND, "작성된 리뷰가 없습니다."));
 
-        if (!review.getMember().equals(currentMember)) {
-            throw new AppException(ErrorCode.UNAUTHORIZED, "본인의 리뷰만 수정할 수 있습니다.");
-        }
 
-        review.update(updateReviewDto.getContent(), updateReviewDto.getRating());
+        review.update(updateReviewRequestDto.getContent(), updateReviewRequestDto.getRating());
 
         return review;
     }
@@ -115,4 +124,5 @@ public class ReviewService {
         return memberRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new AppException(ErrorCode.MEMBER_NOT_FOUND, "사용자를 찾을 수 없습니다."));
     }
+
 }
