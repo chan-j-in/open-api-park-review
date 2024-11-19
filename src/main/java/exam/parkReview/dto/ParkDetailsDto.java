@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +20,7 @@ public class ParkDetailsDto {
     private String guideMap;
     private String address;
     private String websiteUrl;
+    private List<ReviewResponseDto> reviews = new ArrayList<>();
 
     public ParkDetailsDto(Park park) {
         this.parkNum = park.getParkNum();
@@ -26,5 +30,6 @@ public class ParkDetailsDto {
         this.guideMap = park.getGuideMap();
         this.address = park.getAddress();
         this.websiteUrl = park.getWebsiteUrl();
+        this.reviews = reviews;
     }
 }
