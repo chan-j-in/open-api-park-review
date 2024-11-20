@@ -1,17 +1,19 @@
 package exam.parkReview.domain.entity;
 
+import exam.parkReview.domain.ReviewStatistics;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends ReviewStatistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +24,7 @@ public class Member {
     private String password;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Review> reviews;
-
-    private int reviewCount;
-    private double ratingAvg;
+    private List<Review> reviews = new ArrayList<>();
 
     @Builder
     public Member(String username, String password) {
@@ -40,28 +39,4 @@ public class Member {
     public void removeReview(Review review) {
         this.reviews.remove(review);
     }
-
-    public void addReviewCount() {
-        this.reviewCount++;
-    }
-
-    public void subtractReviewCount() {
-        this.reviewCount--;
-    }
-
-    public void setRatingAvg() {
-
-        if (reviews == null || reviews.isEmpty()) {
-            this.ratingAvg = 0;
-            return;
-        }
-
-        double totalRating = reviews.stream()
-                .mapToDouble(Review::getRating)
-                .sum();
-
-        this.ratingAvg = totalRating/reviews.size();
-    }
-
-
 }

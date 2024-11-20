@@ -1,5 +1,6 @@
 package exam.parkReview.domain.entity;
 
+import exam.parkReview.domain.ReviewStatistics;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Park {
+public class Park extends ReviewStatistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +44,10 @@ public class Park {
     }
 
     public void addReview(Review review) {
-        reviews.add(review);
+        this.reviews.add(review);
+    }
+
+    public void removeReview(Review review) {
+        this.reviews.remove(review);
     }
 }
