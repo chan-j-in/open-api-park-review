@@ -5,10 +5,7 @@ import exam.parkReview.dto.member.MemberDto;
 import exam.parkReview.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +28,12 @@ public class MemberController {
 
         MemberDetailDto memberDetail = memberService.getMemberDetail(memberId);
         return ResponseEntity.ok(memberDetail);
+    }
+
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity<Void> deleteMember(@PathVariable("memberId") Long memberId) {
+
+        memberService.deleteMember(memberId);
+        return ResponseEntity.noContent().build();
     }
 }

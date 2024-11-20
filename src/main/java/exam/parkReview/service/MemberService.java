@@ -44,4 +44,10 @@ public class MemberService {
                 member.getRatingAvg(),
                 member.getReviews());
     }
+
+    public void deleteMember(Long memberId) {
+
+        memberRepository.delete(memberRepository.findById(memberId)
+                .orElseThrow(() -> new AppException(ErrorCode.MEMBER_NOT_FOUND, "회원을 찾을 수 없습니다.")));
+    }
 }
