@@ -51,8 +51,10 @@ public class ReviewService {
         member.addReview(review);
         Review savedReview = reviewRepository.save(review);
 
-        member.addReviewCount();
-        member.setRatingAvg();
+        member.incrementReviewCount();
+        member.calculateRatingAvg(member.getReviews());
+        park.incrementReviewCount();
+        park.calculateRatingAvg(park.getReviews());
 
         return new ReviewResponseDto(
                 parkNum,
@@ -97,8 +99,11 @@ public class ReviewService {
         currentMember.removeReview(review);
         reviewRepository.delete(review);
 
-        currentMember.subtractReviewCount();
-        currentMember.setRatingAvg();
+        currentMember.decrementReviewCount();
+        currentMember.calculateRatingAvg(currentMember.getReviews());
+
+        park.decrementReviewCount();
+        park.calculateRatingAvg(park.getReviews());
     }
 
     @Transactional
@@ -114,7 +119,9 @@ public class ReviewService {
 
         review.update(updateReviewRequestDto.getContent(), updateReviewRequestDto.getRating());
 
-        currentMember.setRatingAvg();
+        currentMember.calculateRatingAvg(currentMember.getReviews());
+
+        park.calculateRatingAvg(park.getReviews());
 
         return review;
     }
@@ -133,5 +140,4 @@ public class ReviewService {
         return memberRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new AppException(ErrorCode.MEMBER_NOT_FOUND, "사용자를 찾을 수 없습니다."));
     }
-
 }
