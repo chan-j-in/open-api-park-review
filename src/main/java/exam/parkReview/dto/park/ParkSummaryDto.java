@@ -14,11 +14,15 @@ public class ParkSummaryDto {
     private String parkName;
     private String parkSummary;
     private String address;
+    private int reviewCount;
+    private double ratingAvg;
 
     public ParkSummaryDto(Park park) {
         this.parkNum = park.getParkNum();
         this.parkName = park.getParkName();
         this.parkSummary = park.getParkSummary();
         this.address = park.getAddress();
+        this.reviewCount = park.getReviewCount();
+        this.ratingAvg = park.getRatingAvg();
     }
 }
