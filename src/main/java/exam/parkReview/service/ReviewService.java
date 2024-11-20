@@ -12,6 +12,7 @@ import exam.parkReview.repository.MemberRepository;
 import exam.parkReview.repository.ParkRepository;
 import exam.parkReview.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
@@ -49,18 +51,10 @@ public class ReviewService {
                 .build();
 
         member.addReview(review);
+        park.addReview(review);
         Review savedReview = reviewRepository.save(review);
 
-        member.incrementReviewCount();
-        member.calculateRatingAvg(member.getReviews());
-        park.incrementReviewCount();
-        park.calculateRatingAvg(park.getReviews());
-
-        return new ReviewResponseDto(
-                parkNum,
-                savedReview.getContent(),
-                savedReview.getRating(),
-                member.getUsername());
+        return new ReviewResponseDto(savedReview);
     }
 
     public List<ReviewResponseDto> getReviewsByPark(Long parkNum) {
@@ -71,7 +65,7 @@ public class ReviewService {
         List<Review> reviews = reviewRepository.findByPark(park);
 
         return reviews.stream()
-                .map(review -> new ReviewResponseDto(review.getPark().getParkNum(), review.getContent(), review.getRating(), review.getMember().getUsername()))
+                .map(ReviewResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -81,7 +75,7 @@ public class ReviewService {
 
         List<Review> reviews = reviewRepository.findByMember(member);
         return reviews.stream()
-                .map(review -> new ReviewResponseDto(review.getPark().getParkNum(), review.getContent(), review.getRating(), review.getMember().getUsername()))
+                .map(ReviewResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -97,17 +91,13 @@ public class ReviewService {
                 .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND, "리뷰를 찾을 수 없습니다."));
 
         currentMember.removeReview(review);
+        park.removeReview(review);
+
         reviewRepository.delete(review);
-
-        currentMember.decrementReviewCount();
-        currentMember.calculateRatingAvg(currentMember.getReviews());
-
-        park.decrementReviewCount();
-        park.calculateRatingAvg(park.getReviews());
     }
 
     @Transactional
-    public Review updateReview(Long parkNum, UpdateReviewRequestDto updateReviewRequestDto) {
+    public ReviewResponseDto updateReview(Long parkNum, UpdateReviewRequestDto updateReviewRequestDto) {
 
         Park park = parkRepository.findByParkNum(parkNum)
                 .orElseThrow(() -> new AppException(ErrorCode.PARK_NOT_FOUND, "올바르지 않은 공원 번호입니다."));
@@ -119,11 +109,10 @@ public class ReviewService {
 
         review.update(updateReviewRequestDto.getContent(), updateReviewRequestDto.getRating());
 
-        currentMember.calculateRatingAvg(currentMember.getReviews());
+        currentMember.updateReview();
+        park.updateReview();
 
-        park.calculateRatingAvg(park.getReviews());
-
-        return review;
+        return new ReviewResponseDto(review);
     }
 
     private Member getCurrentMember() {
