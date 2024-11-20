@@ -1,6 +1,5 @@
 package exam.parkReview.controller;
 
-import exam.parkReview.domain.entity.Review;
 import exam.parkReview.dto.review.CreateReviewRequestDto;
 import exam.parkReview.dto.review.ReviewResponseDto;
 import exam.parkReview.dto.review.UpdateReviewRequestDto;
@@ -50,16 +49,9 @@ public class ReviewController {
     @PutMapping("/parks/{parkNum}")
     public ResponseEntity<ReviewResponseDto> updateReview(@PathVariable("parkNum") Long parkNum, @Valid @RequestBody UpdateReviewRequestDto updateReviewRequestDto) {
 
-        Review updatedReview = reviewService.updateReview(parkNum, updateReviewRequestDto);
+        ReviewResponseDto updatedReview = reviewService.updateReview(parkNum, updateReviewRequestDto);
 
-        ReviewResponseDto responseDto = new ReviewResponseDto(
-                updatedReview.getPark().getParkNum(),
-                updatedReview.getContent(),
-                updatedReview.getRating(),
-                updatedReview.getMember().getUsername()
-        );
-
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(updatedReview);
     }
 
 }
